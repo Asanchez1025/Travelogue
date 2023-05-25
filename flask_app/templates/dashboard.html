@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <img src="/static/images/T.2.png" alt="Logo" width="35" height="28"
+                class="d-inline-block align-text-top me-3">
+            <h3 class="logo">Travelogue</h3>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item ms-5">
+                        <a class="nav-link active" aria-current="page" href="/profile">Profile</a>
+                    </li>
+                    <li class="nav-item ms-5">
+                        <a class="nav-link" href="/post">Post</a>
+                    </li>
+                    <li class="nav-item ms-5">
+                        <a class="nav-link" href="/connect">Connect</a>
+                    </li>
+                    <li class="nav-item ms-5">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <h1 class="ms-4 mt-3">Hi {{user.first_name}} {{user.last_name}}!</h1>
+    <a href="/upload" class="btn btn-warning">Upload</a>
+    {% for post in post %}
+    <container class="d-flex justify-content-center mb-3">
+        <form class="form floating mt-5 border border-3 border-dark rounded">
+            <div class="ms-3">
+                <h3 class="bg-dark text-light">{{post.user.first_name}} {{post.user.last_name}}</h3>
+                <h4>Country: {{post.country}}</h4>
+                <h5>City: {{post.city}}</h5>
+                <p class="bg-secondary rounded">Recommendation: {{post.recommendation}}</p>
+                <p class="bg-light rounded">Info: {{post.info}}</p>
+            </div>
+            <div class="d-flex justify-content-evenly">
+                {% if session.user_id in post.all_user_likes | map(attribute = 'id') %}
+                <a href="/dislike/{{post.id}}" class="btn btn-dark rounded-pill">Dislike</a>
+                {% else %}
+                <a href="/like/{{post.id}}" class="btn btn-info rounded-pill">Like</a>
+                {% endif %}
+                <a href="/comment/{{post.id}}" type="submit" class="btn btn-warning rounded-pill">Comment</a>
+                {% if session['user_id'] == post.user_id %}
+                <a href="/delete/{{post.id}}" class="btn btn-danger rounded-pill">Delete</a>
+                {% endif %}
+            </div>
+            <div class="d-flex">
+                <p class=" ms-3 me-2">Likes: {{post.all_user_likes | length}}</p>
+            </div>
+        </form>
+    </container>
+    {% endfor %}
+</body>
+<style>
+    nav {
+        background-color: grey;
+    }
+
+    form {
+        height: mx auto;
+        width: mx auto;
+        box-shadow: 5px 10px;
+    }
+
+    .post {
+        box-shadow: 5px 10px;
+    }
+
+    .logo {
+        font-family: monospace;
+        color: darkolivegreen;
+    }
+
+    .container {
+        width: 300px;
+        margin-left: 70px;
+    }
+
+    body {
+        background-color: darkslategray;
+    }
+</style>
+</html>
+{% if session.user_id in post.all_user_likes | map(attribute = 'id') %}
+{% else %}
+{% endif %}
